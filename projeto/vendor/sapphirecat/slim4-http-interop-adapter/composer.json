@@ -1,0 +1,33 @@
+{
+    "name": "sapphirecat/slim4-http-interop-adapter",
+    "description": "Autoconfigures guzzlehttp/psr7 1.x for use with Slim ^4.9",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Sapphirecat\\Slim4HttpInteropAdapter\\": "src/"
+        },
+        "files": ["setup.php"]
+    },
+    "require": {
+        "php": "^7.1 || ^8.0",
+        "slim/slim": "^4.0",
+        "http-interop/http-factory-guzzle": "^1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7 || ^8 || ^9",
+        "friendsofphp/php-cs-fixer": "^3",
+        "vimeo/psalm": "^4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sapphire Cat",
+            "email": "devel@sapphirepaw.org"
+        }
+    ],
+    "scripts": {
+        "fix": ["@php php-cs-fixer fix"],
+        "psalm": ["@php psalm"],
+	"test": ["@php phpunit tests"]
+    }
+}
