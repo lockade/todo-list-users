@@ -1,0 +1,18 @@
+﻿<h1>Tarefas</h1>
+
+<div ng-if="loading">
+    <h3 class="text-center">Carregando...</h3>
+</div>
+<div ng-if="!loading" class="list-group">
+    <div ng-repeat="task in tasks" class="list-group-item" ng-class="{'list-group-item-info': task.data_conclusao == null, 'list-group-item-success': task.data_conclusao != null}" style="margin-top:8px; width: 100%">
+        <h4 class="list-group-item-heading" style="font-size: 20px;">{{ task.descricao }}</h4>
+        <p class="list-group-item-text" style="font-size: 12px;">Expira em: {{ moment(task.data_expiracao).format("DD/MM/YYYY HH:mm:ss") }}</p>
+        <p ng-if="task.data_conclusao" class="list-group-item-text" style="font-size: 12px;">Concluido em: {{ moment(task.data_conclusao).format("DD/MM/YYYY HH:mm:ss") }}</p>
+        <button ng-click="concluir(task)" class="btn btn-success" ng-if="!task.data_conclusao">
+            Concluir
+        </button>
+    </div>
+</div>
+
+<p><a ng-if="is_admin" href="#/admin">Admin Painel</a></p>
+<p><a href="#/login">Logout</a></p>

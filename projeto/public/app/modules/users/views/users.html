@@ -1,0 +1,95 @@
+﻿<h1>Usuários</h1>
+
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" ng-click="user = {}" data-target="#add">
+    Novo Usuário
+</button>
+
+<div ng-if="loading">
+    <h3 class="text-center">Carregando...</h3>
+</div>
+<table ng-if="!loading" class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Genero</th>
+            <th>Admin</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="dado in users">
+            <td>{{ dado.id }}</td>
+            <td>{{ dado.nome }}</td>
+            <td>{{ dado.email }}</td>
+            <td>{{ dado.telefone }}</td>
+            <td>{{ genero_array[dado.genero].nome }}</td>
+            <td>{{ dado.admin ? "Sim" : "Não" }}</td>
+            <td>
+                <a type="button" class="btn btn-sm btn-success" ng-href="#/users/tasks/{{dado.id}}"><i class="fa-solid fa-list-check"></i> Tarefas</a>
+                <button type="button" class="btn btn-sm btn-info" ng-click="getUser(dado.id)"><i class="fa-solid fa-eye"></i></button>
+                <button type="button" class="btn btn-sm btn-warning" ng-click="editUser(dado.id)"><i class="fa-solid fa-user-pen"></i></button>
+                <button type="button" class="btn btn-sm btn-danger" ng-click="excluir(dado.id)"><i class="fa-solid fa-user-xmark"></i></button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p><a href="#/task">Minhas Tarefas</a></p>
+<p><a href="#/login">Sair</a></p>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="add" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Usuário</h4>
+            </div>
+            <form name="formUser" ng-submit="saveUser()" >
+                <div class="modal-body">
+                    <div class="row" style="padding:30px;">
+                        <div class="form-group">
+                            <label for="basic-url">Nome</label>
+                            <input ng-model="user.nome" type="text" class="form-control" required ng-readonly="user.view">
+                        </div>
+                        <div class="form-group">
+                            <label for="basic-url">Usuário</label>
+                            <input ng-model="user.username" type="text" class="form-control" required ng-readonly="user.view">
+                        </div>
+                        <div class="form-group">
+                            <label for="basic-url">Email</label>
+                            <input ng-model="user.email" type="email" class="form-control" required ng-readonly="user.view">
+                        </div>
+                        <div class="form-group" ng-if="!user.view">
+                            <label for="basic-url">Senha</label>
+                            <input ng-model="user.senha" type="password" class="form-control" ng-required="user.id == null">
+                        </div>
+                        <div class="form-group">
+                            <label for="basic-url">Telefone</label>
+                            <input ng-model="user.telefone" type="text" class="form-control" required ng-readonly="user.view">
+                        </div>
+                        <div class="form-group">
+                            <label for="basic-url">Gênero</label>
+                            <select class="form-control" ng-model="user.genero" required ng-disabled="user.view">
+                                <option ng-repeat="_genero in genero_array" ng-selected="_genero.id == user.genero"  ng-value="_genero.id">{{ _genero.nome }}</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary" ng-if="!user.view" ng-disabled="formUser.$invalid || dataLoading">
+                        <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

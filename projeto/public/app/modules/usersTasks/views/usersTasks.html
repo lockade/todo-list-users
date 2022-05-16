@@ -1,0 +1,73 @@
+﻿<h1>Tarefas Usuário</h1>
+<h4>Usuário: {{ user.nome }}</h4>
+
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" ng-click="task = {}" data-target="#modalTask">
+    Nova Tarefa
+</button>
+
+<div ng-if="loading">
+    <h3 class="text-center">Carregando...</h3>
+</div>
+<table ng-if="!loading" class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descrição</th>
+            <th>Expiração</th>
+            <th>Concluido</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="dado in tasks">
+            <td>{{ dado.id }}</td>
+            <td>{{ dado.descricao }}</td>
+            <td>{{ moment(dado.data_expiracao).format("DD/MM/YYYY HH:mm:ss") }}</td>
+            <td>{{ dado.data_conclusao ? moment(dado.data_conclusao).format("DD/MM/YYYY HH:mm:ss") : 'Não Concluído' }}</td>
+            <td>
+                <button type="button" class="btn btn-sm btn-info" ng-click="viewTask(dado)"><i class="fa-solid fa-eye"></i></button>
+                <button type="button" class="btn btn-sm btn-warning" ng-click="editTask(dado)"><i class="fa-solid fa-user-pen"></i></button>
+                <button type="button" class="btn btn-sm btn-danger" ng-click="excluir(dado.id)"><i class="fa-solid fa-user-xmark"></i></button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<p><a href="#/users">Usuários</a></p>
+<p><a href="#/login">Logout</a></p>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalTask" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Tarefa</h4>
+            </div>
+            <form name="formTask" ng-submit="saveTask()" >
+                <div class="modal-body">
+                    <div class="row" style="padding:30px;">
+                        <div class="form-group">
+                            <label for="basic-url">Descrição</label>
+                            <textarea ng-model="task.descricao" type="text" class="form-control" required ng-readonly="task.view"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="basic-url">Data Expiração</label>
+                            <input ng-model="task.data_expiracao" type="datetime-local" class="form-control" required ng-readonly="task.view">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary" ng-if="!task.view" ng-disabled="formTask.$invalid || dataLoading">
+                        <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

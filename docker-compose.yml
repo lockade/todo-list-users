@@ -1,0 +1,52 @@
+nginx:
+  build: ./nginx
+  ports:
+    - 80:80
+  links:
+    - php
+  volumes_from:
+    - app
+
+php:
+  build: ./php/
+  expose:
+    - 9000
+  links:
+    - mysql 
+  volumes_from:
+    - app
+
+app:
+  image: php:8.1-fpm
+  volumes:
+    - ./projeto/public:/var/www/html
+    - ./projeto:/var/www
+  command: "true"
+
+mysql:
+  build: ./mysql/
+  volumes_from:
+    - data
+  environment:
+    MYSQL_ROOT_PASSWORD: secret
+    MYSQL_DATABASE: project
+    MYSQL_USER: project
+    MYSQL_PASSWORD: project
+  ports:
+    - 3306:3306
+
+data:
+  image: mysql:latest
+  volumes:
+    - /var/lib/mysql 
+    # - ./mysql/startup_run:/docker-entrypoint-initdb.d
+  command: "true"
+
+phpmyadmin:
+  image: phpmyadmin/phpmyadmin
+  ports: 
+    - 8080:80
+  links:
+    - mysql 
+  environment:
+    PMA_HOST: mysql 
