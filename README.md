@@ -14,3 +14,7 @@ Como rodar o projeto ?
 
 5 -> acesse localhost:8080/app
 
+6 -> quando se inicia o projeto é criado um usuario admin
+Login: admin
+Senha: 123456
+
