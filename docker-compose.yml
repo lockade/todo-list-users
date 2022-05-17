@@ -1,7 +1,7 @@
 nginx:
   build: ./nginx
   ports:
-    - 80:80
+    - 8080:80
   links:
     - php
   volumes_from:
@@ -33,7 +33,7 @@ mysql:
     MYSQL_USER: project
     MYSQL_PASSWORD: project
   ports:
-    - 3306:3306
+    - 3309:3306
 
 data:
   image: mysql:latest
@@ -45,7 +45,7 @@ data:
 phpmyadmin:
   image: phpmyadmin/phpmyadmin
   ports: 
-    - 8080:80
+    - 8081:80
   links:
     - mysql 
   environment:
