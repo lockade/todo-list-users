@@ -10,5 +10,7 @@ Como rodar o projeto ?
 
 4 -> docker-compose up
 
-* Cuidado com conflitos de portas, deixar portas 80 e 3306 livres para o uso do ngix e mysql. *
+* Cuidado com conflitos de portas, deixar portas 8080 e 3309 livres para o uso do ngix e mysql. *
+
+5 -> acesse localhost:8080/app
 
