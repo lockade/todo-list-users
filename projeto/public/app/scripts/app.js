@@ -56,7 +56,7 @@ angular.module('BasicHttpAuthExample', [
 
         .when('/users/tasks/:user_id', {
             controller: 'UsersTasksController',
-            templateUrl: 'modules/userstasks/views/usersTasks.html'
+            templateUrl: 'modules/usersTasks/views/usersTasks.html'
         })
 
         .otherwise({ redirectTo: '/login' });
